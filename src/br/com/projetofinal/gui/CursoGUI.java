@@ -85,7 +85,7 @@ public class CursoGUI extends JFrame implements ActionListener {
 		
 		
 		pnlComponentes = new JPanel();
-		pnlComponentes.setBackground(Color.CYAN);
+		/*pnlComponentes.setBackground(Color.CYAN);*/
 		pnlComponentes.setLayout(new FlowLayout());
 		txtCurso = new JTextField(40);
 		txtTempoMin = new JTextField(20);
