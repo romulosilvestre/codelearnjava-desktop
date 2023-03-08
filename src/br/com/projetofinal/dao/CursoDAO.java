@@ -17,14 +17,15 @@ public class CursoDAO implements ICursoDAO {
 			String sql = "INSERT INTO curso(nome,cargaHoraria) VALUES(?,?)";//chupa hacker(lad.galinha) otário	
 			comando = conexao.prepareStatement(sql);
 			comando.setString(1,curso.getNome());
-			comando.setInt(2,curso.getCargaHoraria());		
+			comando.setInt(2,curso.getCargaHoraria());	
+			comando.executeUpdate();//executar tudo que a gente a gente fez.
 			
 		}catch(Exception ex) {
 			ex.printStackTrace();
 		}finally{
 			System.out.println("mensagem ou funcionalidade padrão!");
-			//Conexao.conectar().close();	
-			//comando.close();
+			Conexao.conectar().close();	
+			comando.close();
 		}	
 	
 	}
