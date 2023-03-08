@@ -99,6 +99,19 @@ public class CursoGUI extends JFrame implements ActionListener {
 		pnlComponentes.add(txtCurso);
 		pnlComponentes.add(lblTempoMin);
 		pnlComponentes.add(txtCargaHoraria);
+		
+		//JTable
+		//Inteligência Artificial
+		//Baby Steps
+		    //JTable
+		
+		
+		
+		
+		
+		
+		
+		
 		getContentPane().add(pnlBotoes,BorderLayout.NORTH);
 	    getContentPane().add(pnlComponentes,BorderLayout.WEST);
 	}
@@ -133,6 +146,12 @@ public class CursoGUI extends JFrame implements ActionListener {
 			}
 		}else if(e.getSource() == btnPesquisar) {
 			JOptionPane.showMessageDialog(null,"uhhu pesquisou");
+			try {
+				new TabelaDeCursosGUI().setVisible(true);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			};
 			//dever de casa SQL select
 		}else if(e.getSource() == btnAlterar) {
 			JOptionPane.showMessageDialog(null,"uhhu alterou");
