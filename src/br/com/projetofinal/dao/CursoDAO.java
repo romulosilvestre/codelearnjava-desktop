@@ -26,6 +26,7 @@ public class CursoDAO implements ICursoDAO {
 			System.out.println("mensagem ou funcionalidade padrão!");
 			Conexao.conectar().close();	
 			comando.close();
+			
 		}	
 	
 	}

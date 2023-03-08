@@ -110,11 +110,20 @@ public class CursoGUI extends JFrame implements ActionListener {
 			
 			//PreparedStatement (contra SQL INJECTION)
 			//pegar os dados do usuário
-			String nome = txtCurso.getText();
-			int cargaHoraria = Integer.parseInt(txtCargaHoraria.getText());
+		
 			try {
-				new CursoDAO().cadastrar(new Curso(nome,cargaHoraria));
-				JOptionPane.showMessageDialog(null,"uhhu cadastrou");
+				if((txtCurso.getText().equals(""))&& txtCargaHoraria.getText().equals("")) {
+					JOptionPane.showMessageDialog(null,"Campos obrigatórios");
+					
+				}else {
+					String nome = txtCurso.getText();
+					int cargaHoraria = Integer.parseInt(txtCargaHoraria.getText());
+					new CursoDAO().cadastrar(new Curso(nome,cargaHoraria));
+					JOptionPane.showMessageDialog(null,"uhhu cadastrou");
+					txtCurso.setText("");
+					txtCargaHoraria.setText("");				
+				}		
+				
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
