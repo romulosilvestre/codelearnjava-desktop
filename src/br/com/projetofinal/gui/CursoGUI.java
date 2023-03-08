@@ -13,6 +13,10 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import br.com.projetofinal.dao.CursoDAO;
+import br.com.projetofinal.pojo.Curso;
 //import java.awt.event.ActionListener;//Resp.Técni: Sistema Operacional
 
 //Porque senão? haja memória RAM, haja SSD
@@ -49,7 +53,7 @@ public class CursoGUI extends JFrame implements ActionListener {
 	private JPanel  pnlBotoes;
 	private JPanel  pnlComponentes;
 	private JTextField txtCurso;
-	private JTextField txtTempoMin;
+	private JTextField txtCargaHoraria;
 	private JLabel lblCurso;
 	private JLabel lblTempoMin;
 	
@@ -88,13 +92,13 @@ public class CursoGUI extends JFrame implements ActionListener {
 		/*pnlComponentes.setBackground(Color.CYAN);*/
 		pnlComponentes.setLayout(new FlowLayout());
 		txtCurso = new JTextField(40);
-		txtTempoMin = new JTextField(20);
+		txtCargaHoraria = new JTextField(20);
 		lblCurso = new JLabel("Curso:");
 		lblTempoMin = new JLabel("Tempo Min..");
 		pnlComponentes.add(lblCurso);
 		pnlComponentes.add(txtCurso);
 		pnlComponentes.add(lblTempoMin);
-		pnlComponentes.add(txtTempoMin);
+		pnlComponentes.add(txtCargaHoraria);
 		getContentPane().add(pnlBotoes,BorderLayout.NORTH);
 	    getContentPane().add(pnlComponentes,BorderLayout.WEST);
 	}
@@ -103,8 +107,21 @@ public class CursoGUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {	
 		if(e.getSource() == btnCadastrar) {
-			JOptionPane.showMessageDialog(null,"uhhu cadastrou");
+			
 			//PreparedStatement (contra SQL INJECTION)
+			//pegar os dados do usuário
+			String nome = txtCurso.getText();
+			int cargaHoraria = Integer.parseInt(txtCargaHoraria.getText());
+			try {
+				new CursoDAO().cadastrar(new Curso(nome,cargaHoraria));
+				JOptionPane.showMessageDialog(null,"uhhu cadastrou");
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				JOptionPane.showMessageDialog(null,"Alguma falha na conexão");
+			}finally {
+				
+			}
 		}else if(e.getSource() == btnPesquisar) {
 			JOptionPane.showMessageDialog(null,"uhhu pesquisou");
 			//dever de casa SQL select

@@ -11,7 +11,7 @@ public class Conexao {
 	 * 
 	 * 
 	 */
-	private static final String URL = "jdbc:mysql://localhost:3306/learnsqlpda";
+	private static final String URL = "jdbc:mysql://localhost:3306/projetofinal";
     private static final String USER = "root";
     private static final String PASSWORD = "#SenaiJava209";	
     
@@ -22,12 +22,11 @@ public class Conexao {
         
         try { //tente conectar.
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Bloquinho de Notas e Paint de Galera!");
+            System.out.println("Conexão realizada com sucesso!");//
             
         } catch (SQLException e) {
             System.err.println("Erro ao conectar com o banco de dados: " + e.getMessage());
-        } 
-       
+        }        
         return conn;
     }
 
