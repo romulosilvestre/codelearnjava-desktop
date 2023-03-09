@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 //Tabela
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -44,6 +45,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import br.com.projetofinal.dao.Conexao;
+import br.com.projetofinal.pojo.Curso;
 
 //Classe criada por mim.
 public class TabelaDeCursosGUI extends JFrame implements ActionListener{
@@ -51,8 +53,15 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
 	private JPanel painel1;
 	private JPanel painel2;
 	private JButton btnExcluir;
+	private JButton btnAlterar;
+	private JTextField txtId;
+	private JTextField txtNome;
+	private JTextField txtCargaHoraria;
 	private JTable table;
 	private int id=0;
+	//POG -Prog. Orien. Gabm
+	private String nome;
+	private int cargaHoraria;
 	 
     public TabelaDeCursosGUI() throws SQLException {
     	
@@ -60,7 +69,17 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
     	painel1 = new JPanel();
     	painel2 = new JPanel();
     	btnExcluir = new JButton("Excluir");
+    	btnAlterar= new JButton("Alterar");
+    	txtId = new JTextField(10);
+    	txtNome = new JTextField("Digite o nome",60);
+    	txtCargaHoraria = new JTextField("Digite a carga horária",40);
+        txtId.setEnabled(false);
+    	painel1.add(txtId);
+    	painel1.add(txtNome);
+    	painel1.add(txtCargaHoraria);
     	painel1.add(btnExcluir);
+    	painel1.add(btnAlterar);
+    	
     	
     	painel1.setLayout(new FlowLayout());
     	
@@ -91,6 +110,13 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}			
+		}else if(e.getSource()==btnAlterar) {
+			Curso curso = new Curso();
+			curso.setNome(nome);
+			curso.setCargaHoraria(cargaHoraria);
+			curso.setId(id);
+			new CursoDAO().alterar(curso);
+	
 		}
 		
 	}	
@@ -141,8 +167,15 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
 		            int rowIndex = table.getSelectedRow();
 
 		            // obtém o valor da célula da coluna 0 da linha selecionada
-		            Object cellValue = table.getValueAt(rowIndex, 0);
+		            Object cellValue = table.getValueAt(rowIndex,0);
+		            Object cellValue1 = table.getValueAt(rowIndex,1);
+		            Object cellValue2 = table.getValueAt(rowIndex,2);
                     id = Integer.parseInt(cellValue.toString());
+                    nome = String.valueOf(cellValue1.toString());
+                    cargaHoraria = Integer.parseInt(cellValue2.toString());
+                    txtId.setText(String.valueOf(id));
+                    txtNome.setText(nome);
+                    txtCargaHoraria.setText(String.valueOf(cargaHoraria));
 		            // exibe o valor da célula em um JOptionPane
 		            //JOptionPane.showMessageDialog(null, "Valor selecionado: " + cellValue);
 		        }
@@ -150,7 +183,7 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
 		});
 	   table.revalidate();
 	   table.repaint();
-	   
+	   //twitch tv 
 	   //1 erro
 	   
 	   //******************************************************************* 
