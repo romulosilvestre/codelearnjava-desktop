@@ -1,6 +1,7 @@
 package br.com.projetofinal.gui;
 
-
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 /*
  * Gerado pelo Chat GPT
  * 
@@ -24,12 +25,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 //comandos SQL (Prepar...)
 import java.sql.Statement;
+
+import javax.swing.JButton;
 //Formulário
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 //Barra de Rolagem
 import javax.swing.JScrollPane;
 //Tabela
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 //MVC - View (tabelinha) Model (Dados)
 import javax.swing.table.DefaultTableModel;
 
@@ -38,7 +43,21 @@ import br.com.projetofinal.dao.Conexao;
 //Classe criada por mim.
 public class TabelaDeCursosGUI extends JFrame {
 	
+	private JPanel painel1;
+	private JPanel painel2;
+	private JButton btnExcluir;
+	
+	 
     public TabelaDeCursosGUI() throws SQLException {
+    	
+    	//instanciando os painéis
+    	painel1 = new JPanel();
+    	painel2 = new JPanel();
+    	btnExcluir = new JButton("Excluir");
+    	painel1.add(btnExcluir);
+    	painel1.setLayout(new FlowLayout());
+    	
+    	
     	Statement comando = null;
 		Connection conexao = Conexao.conectar();
 		String sql = "SELECT * FROM curso";
@@ -46,7 +65,7 @@ public class TabelaDeCursosGUI extends JFrame {
 		ResultSet rs = comando.executeQuery(sql);
 		//executar tudo que a gente a gente fez.
 		// Criar modelo de tabela
-		String[] colunas = {"ID", "Nome do Curso", "Carga Horária"};
+		String[] colunas = {"ID", "Nome do Curso", "CH"};
 		DefaultTableModel modelo = new DefaultTableModel(colunas, 0);
 		while (rs.next()) {
 		    int id = rs.getInt("id");
@@ -57,17 +76,30 @@ public class TabelaDeCursosGUI extends JFrame {
 		}
        // Criar tabela
 	   JTable table = new JTable(modelo);
+	
+
+	// ajuste manual da largura das colunas
+	table.getColumnModel().getColumn(0).setPreferredWidth(40);
+	table.getColumnModel().getColumn(1).setPreferredWidth(350);
+	table.getColumnModel().getColumn(2).setPreferredWidth(50);
+
+
+	// desabilita o redimensionamento automático das colunas
+	table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
 	   JScrollPane scrollPane = new JScrollPane(table);
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	   add(scrollPane);
+       painel2.add(scrollPane);
+       BorderLayout border = new BorderLayout();
+       setLayout(border);
+	   add(painel1,BorderLayout.NORTH);
+	   
+	  
+	  
+
+	   add(painel2,BorderLayout.WEST);
 	   pack();
-	   setVisible(true);
-    	
-    }
-		
-		
-
-
-	
+	   setVisible(true);    	
+    }	
 
 }
