@@ -42,7 +42,20 @@ public class CursoDAO implements ICursoDAO {
 	}
 
 	@Override
-	public void excluir() {
-		// TODO Auto-generated method stub		
+	public void excluir(int id) {
+		// TODO Auto-generated method stub	
+		PreparedStatement comando = null;
+		try {
+			Connection conexao = Conexao.conectar();
+			String sql = "DELETE FROM curso WHERE ID = ?";//chupa hacker(lad.galinha) otário	
+			comando = conexao.prepareStatement(sql);
+			comando.setInt(1,id);
+			comando.execute();
+			
+		}catch(Exception ex) {
+			ex.printStackTrace();
+		}finally{
+			System.out.println("mensagem ou funcionalidade padrão!");			
+		}			
 	}
 }
