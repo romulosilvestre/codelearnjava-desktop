@@ -62,6 +62,7 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
 	//POG -Prog. Orien. Gabm
 	private String nome;
 	private int cargaHoraria;
+	private DefaultTableModel modelo;
 	 
     public TabelaDeCursosGUI() throws SQLException {
     	
@@ -78,22 +79,19 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
     	painel1.add(txtNome);
     	painel1.add(txtCargaHoraria);
     	painel1.add(btnExcluir);
-    	painel1.add(btnAlterar);
+    	painel1.add(btnAlterar);   	
     	
-    	
-    	painel1.setLayout(new FlowLayout());
-    	
+    	 painel1.setLayout(new FlowLayout());    	
     	 BorderLayout border = new BorderLayout();
          setLayout(border);
-         preencherTabela();
-    
-       
-       //chamados dos eventos
-       btnExcluir.addActionListener(this);
-	   add(painel1,BorderLayout.NORTH);
-	   add(painel2,BorderLayout.WEST);
-	   pack();
-	   setVisible(true);    	
+         preencherTabela();       
+         //chamados dos eventos
+         btnExcluir.addActionListener(this);
+         btnAlterar.addActionListener(this);
+	     add(painel1,BorderLayout.NORTH);
+	     add(painel2,BorderLayout.WEST);
+	     pack();
+	     setVisible(true);    	
     }
 
 
@@ -101,22 +99,47 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource()==btnExcluir) {
-		    new CursoDAO().excluir(id);
-			JOptionPane.showMessageDialog(null,"Dados Excluídos com Sucesso");
-			try {
-				preencherTabela();
+		    new CursoDAO().excluir(id);						
+			for(int i=0 ; i<modelo.getRowCount(); i++) 
+			{ 
+				if(Integer.parseInt( modelo.getValueAt(i, 0).toString()) == id) {					
+					//VERIFICA QUAL LINHA ESTÁ SELECIONADA PARA SELECIONAR OUTRA LINHA ANTES DE APAGAR 
+					//-- APAGAR UMA LINHA SELECIONADA GERA UM ERRO					
+					if(table.getSelectedRow() != 0) 
+					{ 
+						table.setRowSelectionInterval(0,0); 
+					}else { 
+						table.setRowSelectionInterval(1,1); 
+					}
+				    modelo.removeRow(i); 				   
+				}
+		    }	
+			JOptionPane.showMessageDialog(null,"Dados Excluídos com Sucesso");		
 			
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}			
+
 		}else if(e.getSource()==btnAlterar) {
+			
 			Curso curso = new Curso();
-			curso.setNome(nome);
-			curso.setCargaHoraria(cargaHoraria);
-			curso.setId(id);
-			new CursoDAO().alterar(curso);
-	
+			curso.setNome(txtNome.getText());
+			curso.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
+			curso.setId(Integer.parseInt(txtId.getText()));
+			new CursoDAO().alterar(curso);//atualiza no banco	
+			
+			//for i=0 até o final das linhas e vai ++
+			for(int i=0 ; i<modelo.getRowCount(); i++) { 
+				//if - verifica se o id da linha é igual o id que a gente quer deletar.
+				//getValueAt(  ) - valor //lembra aque Id que desabilitamos Fernanda?
+				if(Integer.parseInt( modelo.getValueAt(i, 0).toString()) == Integer.parseInt(txtId.getText())) {
+					modelo.setValueAt(txtNome.getText(), i, 1);//atualiza no model do JTable
+					modelo.setValueAt(Integer.parseInt(txtCargaHoraria.getText()), i, 2);
+				} 
+			}			
+			
+			txtNome.setText("");
+			txtCargaHoraria.setText("");
+			JOptionPane.showMessageDialog(null,"Alterado com Sucesso!");
+		
+			
 		}
 		
 	}	
@@ -135,7 +158,7 @@ public class TabelaDeCursosGUI extends JFrame implements ActionListener{
 		
 		//Montar a DefaultTableModel
 		String[] colunas = {"ID", "Nome do Curso", "CH"};
-		DefaultTableModel modelo = new DefaultTableModel(colunas, 0);
+		modelo = new DefaultTableModel(colunas, 0);
 		while (rs.next()) {
 		    int id = rs.getInt("id");
 		    String nome = rs.getString("nome");
